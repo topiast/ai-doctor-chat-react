@@ -1,25 +1,85 @@
-import logo from './logo.svg';
-import './App.css';
+import MessageList from './components/MessageList.jsx'
+import SendMessageForm from './components/SendMessageForm.jsx'
+import './App.css'
+import { useEffect, useState } from 'react'
+const { Configuration, OpenAIApi } = require('openai')
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+// openai configurations
+const configuration = new Configuration({
+  apiKey: process.env.REACT_APP_OPENAI_API_KEY
+})
+
+const openai = new OpenAIApi(configuration)
+const session_prompt =
+  'A conversation between a virtual doctor and a patient. Patient describes its problem. The doctor asks questions until it can give a diagnosis and treatment instructions for the diagnosis. The doctor can not give a medicine prescription but it can advise booking a doctors apointment to get the medicine prescription if its needed for the diagnosis. The doctor will give treatment instructions.\n\nDoctor:\n\n"Hello, my name is Dr. Smith. I\'ll be your virtual doctor today. How can I help you?"'
+const start_sequence = '\n\nDoctor:'
+const restart_sequence = '\n\nPatient:'
+const dialog = [
+  {
+    sender: 'Dr.Smith',
+    text: "Hello, my name is Dr. Smith. I'll be your virtual doctor today. How can I help you?",
+    id: 0
+  }
+]
+let full_string_dialog = session_prompt
+
+const ask = async (question, chat_log) => {
+  const prompt_text = `${chat_log}${restart_sequence}\n"${question}"${start_sequence}\n`
+  const response = await openai.createCompletion({
+    model: 'text-davinci-002',
+    prompt: prompt_text,
+    temperature: 0.7,
+    max_tokens: 666,
+    top_p: 1,
+    frequency_penalty: 0,
+    stop: ['"\n']
+  })
+
+  return response.data.choices[0].text.toString()
 }
 
-export default App;
+function App() {
+  const [messages, changeMessages] = useState(dialog)
+  const [userMessage, chageUserMessage] = useState(false)
+  const sendMessage = (message) => {
+    chageUserMessage(true)
+    changeMessages(
+      messages.concat({
+        sender: 'user',
+        text: message,
+        id: messages.length + 1
+      })
+    )
+  }
+
+  useEffect(() => {
+    const getResponse = async () => {
+      const message = messages[messages.length - 1].text
+      chageUserMessage(false)
+      const doctor_reply = await ask(message, full_string_dialog)
+      changeMessages(
+        messages.concat({
+          sender: 'Dr. Smith',
+          text: doctor_reply.replace(/"|\n/g, ''),
+          id: messages.length + 1
+        })
+      )
+
+      //update full dialog
+      full_string_dialog += `\n\nPatient:\n\n"${message}"\n\nDoctor:\n${doctor_reply}\n`
+    }
+    if (userMessage) {
+      getResponse()
+    }
+  }, [messages])
+
+  return (
+    <div className='app'>
+      {/* <Title /> */}
+      <MessageList messages={messages} />
+      <SendMessageForm sendMessage={sendMessage} />
+    </div>
+  )
+}
+
+export default App
