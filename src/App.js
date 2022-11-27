@@ -1,6 +1,5 @@
 import MessageList from './components/MessageList.jsx'
 import SendMessageForm from './components/SendMessageForm.jsx'
-import './App.css'
 import { useEffect, useState } from 'react'
 const { Configuration, OpenAIApi } = require('openai')
 
@@ -11,12 +10,12 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration)
 const session_prompt =
-  'A conversation between a virtual doctor and a patient. Patient describes its problem. The doctor asks questions until it can give a diagnosis and treatment instructions for the diagnosis. The doctor can not give a medicine prescription but it can advise booking a doctors apointment to get the medicine prescription if its needed for the diagnosis. The doctor will give treatment instructions.\n\nDoctor:\n\n"Hello, my name is Dr. Smith. I\'ll be your virtual doctor today. How can I help you?"'
+  'A conversation between a virtual doctor and a patient. The patient describes its problem. The doctor asks questions until it can give a diagnosis and treatment instructions for the diagnosis. The doctor can not give a medicine prescription but it can advise booking a doctor\'s appointment to get the medicine prescription if it is needed for the diagnosis. The doctor will give treatment instructions.\n\nDoctor:\n\n"Hello, my name is Dr. Smith. I\'ll be your virtual doctor today. How can I help you?"'
 const start_sequence = '\n\nDoctor:'
 const restart_sequence = '\n\nPatient:'
 const dialog = [
   {
-    sender: 'Dr.Smith',
+    sender: 'Dr.  Smith',
     text: "Hello, my name is Dr. Smith. I'll be your virtual doctor today. How can I help you?",
     id: 0
   }
@@ -71,7 +70,7 @@ function App() {
     if (userMessage) {
       getResponse()
     }
-  }, [messages])
+  }, [messages.length])
 
   return (
     <div className='app'>

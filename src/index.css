@@ -35,7 +35,7 @@ body {
 
 .app {
   height: calc(100% - 100px);
-  background-color: var(--send-message-form);
+  background-color: var(--secondary-color);
 }
 
 .title {
@@ -51,7 +51,66 @@ body {
   text-align: center;
 }
 
+/* ul li {
+  box-sizing: border-box;
+  padding: 0 0 0 6px;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+  background: white;
+  font-family: Helvetica, Arial, sans-serif;
+} */
+
+.message-user {
+  clear: both;
+  margin: 15px 0;
+
+  float: right;
+}
+
+.message-user div:nth-child(1) {
+  font-size: 11px;
+  color: var(--main-text-color);
+  opacity: 0.9;
+  margin-bottom: 24px;
+}
+.message-user div:nth-child(2) {
+  background: var(--secondary-text-color);
+  color: var(--secondary-color);
+  display: inline;
+  padding: 20px;
+  border-radius: 30px;
+  margin-bottom: 2px;
+  border-bottom-right-radius: 5px;
+}
+
 .message {
+  clear: both;
+  margin: 15px 0;
+  float: left;
+}
+
+.message div:nth-child(1) {
+  font-size: 11px;
+  color: var(--main-text-color);
+  opacity: 0.9;
+  margin-bottom: 24px;
+}
+.message div:nth-child(2) {
+  line-height: 3.5;
+
+  padding: 20px;
+  border-radius: 30px;
+  margin-bottom: 2px;
+  margin-top: 30px;
+  background: var(--main-color);
+  color: var(--secondary-color);
+  display: inline;
+  border-top-left-radius: 5px;
+}
+
+/* .message {
   margin: 15px 0;
 }
 
@@ -84,10 +143,11 @@ body {
   display: inline;
   padding: 4px 8px;
   border-radius: 8px;
-}
+}*/
 
 .message-list {
   box-sizing: border-box;
+  list-style: none;
   padding: 0 0 0 6px;
   margin: 0;
   width: 100%;
