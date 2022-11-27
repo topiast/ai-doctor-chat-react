@@ -73,13 +73,21 @@ body {
   font-size: 11px;
   color: var(--main-text-color);
   opacity: 0.9;
-  margin-bottom: 24px;
+  margin-bottom: 5px;
 }
 .message-user div:nth-child(2) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.message-user div:nth-child(2) div {
+  line-height: 3.5;
+  font-size: 13px;
+
   background: var(--secondary-text-color);
   color: var(--secondary-color);
   display: inline;
-  padding: 20px;
+  padding: 10px;
   border-radius: 30px;
   margin-bottom: 2px;
   border-bottom-right-radius: 5px;
@@ -95,15 +103,20 @@ body {
   font-size: 11px;
   color: var(--main-text-color);
   opacity: 0.9;
-  margin-bottom: 24px;
+  margin-bottom: 5px;
 }
 .message div:nth-child(2) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.message div:nth-child(2) div {
   line-height: 3.5;
+  font-size: 13px;
 
-  padding: 20px;
+  padding: 10px;
   border-radius: 30px;
   margin-bottom: 2px;
-  margin-top: 30px;
   background: var(--main-color);
   color: var(--secondary-color);
   display: inline;

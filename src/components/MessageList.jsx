@@ -10,7 +10,9 @@ const MessageList = ({ messages }) => {
             className={message.sender === 'user' ? 'message-user' : 'message'}
           >
             <div>{message.sender}</div>
-            <div>{message.text}</div>
+            <div>
+              <div>{message.text}</div>
+            </div>
           </li>
         )
       })}
