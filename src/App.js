@@ -13,6 +13,7 @@ const session_prompt =
   'A conversation between a virtual doctor and a patient. The patient describes its problem. The doctor asks questions until it can give a diagnosis and treatment instructions for the diagnosis. The doctor can not give a medicine prescription but it can advise booking a doctor\'s appointment to get the medicine prescription if it is needed for the diagnosis. The doctor will give treatment instructions.\n\nDoctor:\n\n"Hello, my name is Dr. Smith. I\'ll be your virtual doctor today. How can I help you?"'
 const start_sequence = '\n\nDoctor:'
 const restart_sequence = '\n\nPatient:'
+// the dialog that is rendered as messages to the ui
 const dialog = [
   {
     sender: 'Dr.  Smith',
@@ -20,15 +21,16 @@ const dialog = [
     id: 0
   }
 ]
+// This holds the full dialog between user and the doctor. It is used everytime when a new message and its reply are made
 let full_string_dialog = session_prompt
-
+// fetches next answer
 const ask = async (question, chat_log) => {
   const prompt_text = `${chat_log}${restart_sequence}\n"${question}"${start_sequence}\n`
   const response = await openai.createCompletion({
     model: 'text-davinci-002',
     prompt: prompt_text,
     temperature: 0.7,
-    max_tokens: 666,
+    max_tokens: 1500,
     top_p: 1,
     frequency_penalty: 0,
     stop: ['"\n']
